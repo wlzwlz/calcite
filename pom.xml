@@ -73,17 +73,19 @@ limitations under the License.
     <fmpp-maven-plugin.version>1.0</fmpp-maven-plugin.version>
     <foodmart-data-hsqldb.version>0.3</foodmart-data-hsqldb.version>
     <foodmart-queries.version>0.4.1</foodmart-queries.version>
-    <forbiddenapis.version>2.3</forbiddenapis.version>
+    <forbiddenapis.version>2.5</forbiddenapis.version>
     <freemarker.version>2.3.25-incubating</freemarker.version>
     <git-commit-id-plugin.version>2.1.9</git-commit-id-plugin.version>
     <geode.version>1.3.0</geode.version>
+    <fongo.version>2.1.1</fongo.version>
 
     <!-- We support (and test against) Guava versions between
          19.0 and 23.0. Default is 19.0 due to Cassandra adapter. -->
     <guava.version>19.0</guava.version>
     <joda.version>2.8.1</joda.version>
     <h2.version>1.4.185</h2.version>
-    <hadoop.version>2.7.0</hadoop.version>
+    <!-- Require Hadoop 2.7.4+ due to HADOOP-14586 -->
+    <hadoop.version>2.7.5</hadoop.version>
     <hamcrest.version>1.3</hamcrest.version>
     <hppc.version>0.7.1</hppc.version>
     <hsqldb.version>2.4.0</hsqldb.version>
@@ -104,10 +106,12 @@ limitations under the License.
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
-    <!-- Apache 19 has 2.10.4, but need 3.0.0 for [LANG-365]. -->
+    <!-- Apache 19 has 2.10.4, but need 3.0.0 for [LANG-1365]. -->
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
     <maven-scm-provider.version>1.9.4</maven-scm-provider.version>
     <maven-shade-plugin.version>2.1</maven-shade-plugin.version>
+    <!-- Apache 19 has 2.20.1, but need 2.21.0+ for [MPOM-184] -->
+    <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
     <mockito.version>2.5.5</mockito.version>
     <mongo-java-driver.version>3.5.0</mongo-java-driver.version>
     <mysql-driver.version>5.1.20</mysql-driver.version>
@@ -124,7 +128,7 @@ limitations under the License.
     <servlet.version>3.0.1</servlet.version>
     <slf4j.version>1.7.13</slf4j.version>
     <spark.version>2.2.0</spark.version>
-    <sqlline.version>1.3.0</sqlline.version>
+    <sqlline.version>1.4.0</sqlline.version>
     <xalan.version>2.7.1</xalan.version>
     <xerces.version>2.9.1</xerces.version>
     <sketches.version>0.9.0</sketches.version>
@@ -456,6 +460,11 @@ limitations under the License.
         <version>${mongo-java-driver.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.github.fakemongo</groupId>
+        <artifactId>fongo</artifactId>
+        <version>${fongo.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.openjdk.jmh</groupId>
         <artifactId>jmh-core</artifactId>
         <version>${jmh.version}</version>
@@ -613,8 +622,8 @@ limitations under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>8</source>
+          <target>8</target>
           <compilerArgument>-Xlint:deprecation</compilerArgument>
         </configuration>
       </plugin>
@@ -855,6 +864,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
           <configuration>
             <threadCount>1</threadCount>
             <perCoreThreadCount>true</perCoreThreadCount>
